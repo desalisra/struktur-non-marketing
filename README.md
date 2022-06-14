@@ -55,7 +55,7 @@ value = "jakarta"
 
 ### /jabatan-iklan (GET)
 (example query)
-``` json
+``` js
 pt_id = 1
 jab_id = 281
 dpt_id = 227
@@ -66,7 +66,7 @@ dpt_id = 227
 ## /struktur
 ### /groupteri (GET)
 (Example query)
-``` json
+``` js
 pt_id = 1
 dpt_id = 227
 ```
