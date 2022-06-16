@@ -32,6 +32,28 @@ type GroupTeriHandler interface {
 	GetStrukturTeri(w http.ResponseWriter, r *http.Request)
 }
 
+// SubAreaHandler ...
+type SubAreaHandler interface {
+	GetStrukturSubarea(w http.ResponseWriter, r *http.Request)
+}
+
+// AreaHandler ...
+type AreaHandler interface {
+	GetStrukturSubarea(w http.ResponseWriter, r *http.Request)
+}
+
+// RegionHandler ...
+type RegionHandler interface {
+	GetStrukturRegion(w http.ResponseWriter, r *http.Request)
+}
+
+// NsmHandler ...
+type NsmHandler interface {
+	GetStrukturNsm(w http.ResponseWriter, r *http.Request)
+}
+
+
+
 // Server ...
 type Server struct {
 	// server   *http.Server
@@ -39,6 +61,10 @@ type Server struct {
 	City		CityHandler
 	Iklan		IklanHandler
 	GroupTeri	GroupTeriHandler
+	SubArea		SubAreaHandler
+	Area		AreaHandler
+	Region		RegionHandler
+	Nsm			NsmHandler
 }
 
 // Serve is serving HTTP gracefully on port x ...

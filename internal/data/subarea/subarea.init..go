@@ -1,4 +1,4 @@
-package grpteri
+package subarea
 
 import (
 	"context"
@@ -29,23 +29,23 @@ func (d *Data) UpdateConn() {
 
 // Query List to Prepare
 const (
-	getGrpteri  = "getGrpteri"
-	qGetGrpteri = `SELECT Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
-						Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
-						Grpt_In, Grpt_Out, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name
-					FROM Nm_Rayon_Grpteri_202206
-					LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
-					LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
-					LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
-					LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
-					WHERE Grpt_ActiveYN = 'Y'
-					AND Grpt_CompanyId = ?
-					AND Grpt_DepartmentId = ?`
+	getSubarea  = "getSubarea"
+	qGetSubarea = `SELECT Sub_CompanyId, Pt_Name, Sub_DepartmentId, Dpt_Name, 
+						Sub_CdGroup, Sub_Nip, Sub_Name, Sub_PositionId, Sub_Position,
+						Sub_In, Sub_Out, Sub_BranchId, Cab_Nama, Sub_CityId, Kota_Name
+					FROM Nm_Rayon_Subarea_202206
+					LEFT JOIN M_Pt ON Sub_CompanyId = Pt_Id
+					LEFT JOIN M_Departemen ON Sub_DepartmentId = Dpt_Id
+					LEFT JOIN M_Cabang ON Sub_BranchId = Cab_Id
+					LEFT JOIN M_Kota ON Sub_CityId = Kota_Id
+					WHERE Sub_ActiveYN = 'Y'
+					AND Sub_CompanyId = ?
+					AND Sub_DepartmentId = ?`
 )
 
 var (
 	readStmt   = []statement{
-		{getGrpteri, qGetGrpteri},
+		{getSubarea, qGetSubarea},
 	}
 	upsertStmt = []statement{}
 	deleteStmt = []statement{}

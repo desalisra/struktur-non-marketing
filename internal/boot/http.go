@@ -34,6 +34,22 @@ import (
 	grpteriData "struktur-non-marketing/internal/data/groupteri"
 	grpteriHandler "struktur-non-marketing/internal/delivery/http/groupteri"
 	grpteriService "struktur-non-marketing/internal/service/groupteri"
+
+	subData "struktur-non-marketing/internal/data/subarea"
+	subHandler "struktur-non-marketing/internal/delivery/http/subarea"
+	subService "struktur-non-marketing/internal/service/subarea"
+
+	areaData "struktur-non-marketing/internal/data/area"
+	areaHandler "struktur-non-marketing/internal/delivery/http/area"
+	areaService "struktur-non-marketing/internal/service/area"
+
+	regData "struktur-non-marketing/internal/data/region"
+	regHandler "struktur-non-marketing/internal/delivery/http/region"
+	regService "struktur-non-marketing/internal/service/region"
+
+	nsmData "struktur-non-marketing/internal/data/nsm"
+	nsmHandler "struktur-non-marketing/internal/delivery/http/nsm"
+	nsmService "struktur-non-marketing/internal/service/nsm"
 )
 
 // HTTP will load configuration, do dependency injection and then start the HTTP server
@@ -88,12 +104,32 @@ func HTTP() error {
 	grpteris := grpteriService.New(grpterid, cd)
 	grpterih := grpteriHandler.New(grpteris)
 
+	subd := subData.New(db)
+	subs := subService.New(subd, cd)
+	subh := subHandler.New(subs)
+
+	aread := areaData.New(db)
+	areas := areaService.New(aread, cd)
+	areah := areaHandler.New(areas)
+
+	regd := regData.New(db)
+	regs := regService.New(regd, cd)
+	regh := regHandler.New(regs)
+
+	nsmd := nsmData.New(db)
+	nsms := nsmService.New(nsmd, cd)
+	nsmh := nsmHandler.New(nsms)
+
 
 	s := server.Server{
 		Department: dpth,
 		City: cityh,
 		Iklan: iklanh,
 		GroupTeri: grpterih,
+		SubArea: subh,
+		Area: areah,
+		Region: regh,
+		Nsm: nsmh,
 	}
 
 	if err := s.Serve(cfg.Server.Port); err != http.ErrServerClosed {

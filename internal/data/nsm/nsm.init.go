@@ -1,4 +1,4 @@
-package grpteri
+package nsm
 
 import (
 	"context"
@@ -29,23 +29,23 @@ func (d *Data) UpdateConn() {
 
 // Query List to Prepare
 const (
-	getGrpteri  = "getGrpteri"
-	qGetGrpteri = `SELECT Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
-						Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
-						Grpt_In, Grpt_Out, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name
-					FROM Nm_Rayon_Grpteri_202206
-					LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
-					LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
-					LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
-					LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
-					WHERE Grpt_ActiveYN = 'Y'
-					AND Grpt_CompanyId = ?
-					AND Grpt_DepartmentId = ?`
+	getNsm  = "getNsm"
+	qGetNsm = `SELECT Nsm_CompanyId, Pt_Name, Nsm_DepartmentId, Dpt_Name, 
+						Nsm_CdGroup, Nsm_Nip, Nsm_Name, Nsm_PositionId, Nsm_Position,
+						Nsm_In, Nsm_Out, Nsm_BranchId, Cab_Nama, Nsm_CityId, Kota_Name
+					FROM Nm_Rayon_Nsm_202206
+					LEFT JOIN M_Pt ON Nsm_CompanyId = Pt_Id
+					LEFT JOIN M_Departemen ON Nsm_DepartmentId = Dpt_Id
+					LEFT JOIN M_Cabang ON Nsm_BranchId = Cab_Id
+					LEFT JOIN M_Kota ON Nsm_CityId = Kota_Id
+					WHERE Nsm_ActiveYN = 'Y'
+					AND Nsm_CompanyId = ?
+					AND Nsm_DepartmentId = ?`
 )
 
 var (
 	readStmt   = []statement{
-		{getGrpteri, qGetGrpteri},
+		{getNsm, qGetNsm},
 	}
 	upsertStmt = []statement{}
 	deleteStmt = []statement{}

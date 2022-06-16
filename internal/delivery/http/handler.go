@@ -39,11 +39,27 @@ func (s *Server) Handler() *mux.Router {
 	master.HandleFunc("/jabatan-iklan", s.Iklan.GetJabIklan).Methods("GET")
 
 	
-	// Routes
-	struktur := router.PathPrefix("/struktur").Subrouter()
-	struktur.HandleFunc("/groupteri", s.GroupTeri.GetStrukturTeri).Methods("GET")
+	// Routes path MR (GroupTeri)
+	grpt := router.PathPrefix("/mr").Subrouter()
+	grpt.HandleFunc("/struktur", s.GroupTeri.GetStrukturTeri).Methods("GET")
 	
+	// Routes path SPV (SubArea)
+	sub := router.PathPrefix("/spv").Subrouter()
+	sub.HandleFunc("/struktur", s.SubArea.GetStrukturSubarea).Methods("GET")
 
+	// Routes path ASM (Area)
+	asm := router.PathPrefix("/asm").Subrouter()
+	asm.HandleFunc("/struktur", s.Area.GetStrukturSubarea).Methods("GET")
+
+	// Routes path SM (Region)
+	sm := router.PathPrefix("/sm").Subrouter()
+	sm.HandleFunc("/struktur", s.Region.GetStrukturRegion).Methods("GET")
+
+	// Routes path NSM 
+	nsm := router.PathPrefix("/nsm").Subrouter()
+	nsm.HandleFunc("/struktur", s.Region.GetStrukturRegion).Methods("GET")
+
+	
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	return r
 }
