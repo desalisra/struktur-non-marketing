@@ -16,9 +16,17 @@ type ListSubarea struct {
 	PositionName 	string `db:"Sub_Position" json:"position_name"`
 	DateIn       	null.String   `db:"Sub_In" json:"date_in"`
 	DateOut      	null.String   `db:"Sub_Out" json:"date_out"`
-	
+	Dummy      		null.String   `db:"Sub_DummyYN" json:"dummy"`
 	BranchID       	int   	`db:"Sub_BranchId" json:"branch_id"`
 	BranchName     	string  `db:"Cab_Nama" json:"branch_name"`
 	CityID       	int		`db:"Sub_CityId" json:"city_id"`
 	CityName      	string  `db:"Kota_Name" json:"city_name"`
+	NipShadow       null.String `db:"Sub_NipShadow" json:"shadow_nip"`
+	NameShadow      null.String `db:"Sub_NameShadow" json:"shadow_name"`
+	DateInShadow    null.String   `db:"Sub_InShadow" json:"shadow_in"`
+	DateOutShadow   null.String   `db:"Sub_OutShadow" json:"shadow_out"`
+	DummyShadow	    null.String   `db:"Sub_DummyShadowYN" json:"shadow_dummy"`
+	CdHead	    	int   		  `db:"Sub_Head" json:"code_head"`
+	HeadNip	    	null.String   `db:"Area_Nip" json:"head_nip"`
+	HeadName	    null.String   `db:"Area_Name" json:"head_name"`
 }

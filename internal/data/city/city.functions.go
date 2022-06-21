@@ -2,6 +2,7 @@ package city
 
 import (
 	"context"
+	"fmt"
 	"struktur-non-marketing/pkg/errors"
 
 	entity "struktur-non-marketing/internal/entity/city"
@@ -34,6 +35,8 @@ func (d Data) GetCityById(ctx context.Context, cityID string) (entity.City, erro
 	resulst := entity.City{}
 
 	d.UpdateConn()
+
+	fmt.Println(cityID)
 
 	if err := d.stmt[getCityById].QueryRowxContext(ctx, cityID).StructScan(&resulst); err != nil {
 		return resulst, errors.Wrap(err, "[DATA][GET_CITY_BYID_EXEC_QUERY]")

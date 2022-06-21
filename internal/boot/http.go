@@ -28,6 +28,10 @@ import (
 	iklanHandler "struktur-non-marketing/internal/delivery/http/jabiklan"
 	iklanService "struktur-non-marketing/internal/service/jabiklan"
 
+	kryData "struktur-non-marketing/internal/data/karyawan"
+	kryHandler "struktur-non-marketing/internal/delivery/http/karyawan"
+	kryService "struktur-non-marketing/internal/service/karyawan"
+
 	// client sementara
 	clientData "struktur-non-marketing/internal/data/data_client"
 
@@ -98,6 +102,10 @@ func HTTP() error {
 	iklans := iklanService.New(ikland)
 	iklanh := iklanHandler.New(iklans)
 
+	kryd := kryData.New(db)
+	krys := kryService.New(kryd)
+	kryh := kryHandler.New(krys)
+
 	cd := clientData.New(httpc, cfg.API.Client)
 	
 	grpterid := grpteriData.New(db)
@@ -125,6 +133,7 @@ func HTTP() error {
 		Department: dpth,
 		City: cityh,
 		Iklan: iklanh,
+		Karyawan: kryh,
 		GroupTeri: grpterih,
 		SubArea: subh,
 		Area: areah,

@@ -37,7 +37,7 @@ func (s *Server) Handler() *mux.Router {
 	master.HandleFunc("/branch/{id}", s.City.GetBranchByCityId).Methods("GET")
 
 	master.HandleFunc("/jabatan-iklan", s.Iklan.GetJabIklan).Methods("GET")
-
+	master.HandleFunc("/karyawan", s.Karyawan.GetKaryawan).Methods("GET")
 	
 	// Routes path MR (GroupTeri)
 	grpt := router.PathPrefix("/mr").Subrouter()
@@ -57,7 +57,7 @@ func (s *Server) Handler() *mux.Router {
 
 	// Routes path NSM 
 	nsm := router.PathPrefix("/nsm").Subrouter()
-	nsm.HandleFunc("/struktur", s.Region.GetStrukturRegion).Methods("GET")
+	nsm.HandleFunc("/struktur", s.Nsm.GetStrukturNsm).Methods("GET")
 
 	
 	router.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)

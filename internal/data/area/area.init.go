@@ -29,18 +29,23 @@ func (d *Data) UpdateConn() {
 
 // Query List to Prepare
 const (
-	getArea  = "getSubarea"
+	getArea  = "getArea"
 	qGetArea = `SELECT Area_CompanyId, Pt_Name, Area_DepartmentId, Dpt_Name, 
-						Area_CdGroup, Area_Nip, Area_Name, Area_PositionId, Area_Position,
-						Area_In, Area_Out, Area_BranchId, Cab_Nama, Area_CityId, Kota_Name
-					FROM Nm_Rayon_Area_202206
-					LEFT JOIN M_Pt ON Area_CompanyId = Pt_Id
-					LEFT JOIN M_Departemen ON Area_DepartmentId = Dpt_Id
-					LEFT JOIN M_Cabang ON Area_BranchId = Cab_Id
-					LEFT JOIN M_Kota ON Area_CityId = Kota_Id
-					WHERE Area_ActiveYN = 'Y'
-					AND Area_CompanyId = ?
-					AND Area_DepartmentId = ?`
+					Area_CdGroup, Area_Nip, Area_Name, Area_PositionId, Area_Position,
+					Area_In, Area_Out, Area_DummyYN, Area_BranchId, Cab_Nama, Area_CityId, Kota_Name,
+					Area_NipShadow, Area_NameShadow, Area_InShadow, Area_OutShadow, Area_DummyShadowYN,
+					Area_Head, Reg_Nip, Reg_Name
+				FROM Nm_Rayon_Area_202206
+				LEFT JOIN M_Pt ON Area_CompanyId = Pt_Id
+				LEFT JOIN M_Departemen ON Area_DepartmentId = Dpt_Id
+				LEFT JOIN M_Cabang ON Area_BranchId = Cab_Id
+				LEFT JOIN M_Kota ON Area_CityId = Kota_Id
+				LEFT JOIN Nm_Rayon_Region_202206 ON Area_Head = Reg_CdGroup
+					AND Area_CompanyId = Reg_CompanyId
+					AND Area_DepartmentId = Reg_DepartmentId
+				WHERE Area_ActiveYN = 'Y'
+				AND Area_CompanyId = ?
+				AND Area_DepartmentId = ?`
 )
 
 var (

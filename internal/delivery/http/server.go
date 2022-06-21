@@ -27,6 +27,11 @@ type IklanHandler interface {
 	GetJabIklan(w http.ResponseWriter, r *http.Request)
 }
 
+// KaryawanHandler ...
+type KaryawanHandler interface {
+	GetKaryawan(w http.ResponseWriter, r *http.Request)
+}
+
 // GroupTeriHandler ...
 type GroupTeriHandler interface {
 	GetStrukturTeri(w http.ResponseWriter, r *http.Request)
@@ -60,6 +65,7 @@ type Server struct {
 	Department	DepartmentHandler
 	City		CityHandler
 	Iklan		IklanHandler
+	Karyawan	KaryawanHandler
 	GroupTeri	GroupTeriHandler
 	SubArea		SubAreaHandler
 	Area		AreaHandler

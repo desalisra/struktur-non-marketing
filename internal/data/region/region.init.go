@@ -32,12 +32,17 @@ const (
 	getRegion  = "getRegion"
 	qGetRegion = `SELECT Reg_CompanyId, Pt_Name, Reg_DepartmentId, Dpt_Name, 
 						Reg_CdGroup, Reg_Nip, Reg_Name, Reg_PositionId, Reg_Position,
-						Reg_In, Reg_Out, Reg_BranchId, Cab_Nama, Reg_CityId, Kota_Name
+						Reg_In, Reg_Out, Reg_DummyYN, Reg_BranchId, Cab_Nama, Reg_CityId, Kota_Name,
+						Reg_NipShadow, Reg_NameShadow, Reg_InShadow, Reg_OutShadow, Reg_DummyShadowYN,
+						Reg_Head, Nsm_Nip, Nsm_Name
 					FROM Nm_Rayon_Region_202206
 					LEFT JOIN M_Pt ON Reg_CompanyId = Pt_Id
 					LEFT JOIN M_Departemen ON Reg_DepartmentId = Dpt_Id
 					LEFT JOIN M_Cabang ON Reg_BranchId = Cab_Id
 					LEFT JOIN M_Kota ON Reg_CityId = Kota_Id
+					LEFT JOIN Nm_Rayon_Nsm_202206 ON Reg_Head = Nsm_CdGroup
+						AND Reg_CompanyId = Nsm_CompanyId
+						AND Reg_DepartmentId = Nsm_DepartmentId
 					WHERE Reg_ActiveYN = 'Y'
 					AND Reg_CompanyId = ?
 					AND Reg_DepartmentId = ?`
