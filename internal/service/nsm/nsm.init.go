@@ -7,7 +7,7 @@ import (
 )
 
 type Data interface {
-	GetStrukturNsm(ctx context.Context, ptID string, dptID string) ([]entity.ListNsm, error)
+	GetListStrukturNsm(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListNsm, error)
 }
 
 type Client interface {

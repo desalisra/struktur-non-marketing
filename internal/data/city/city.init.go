@@ -32,25 +32,29 @@ const (
 	getCitys  = "getCitys"
 	qGetCitys = `SELECT Kota_Id, Kota_Name
 				FROM M_Kota
-				WHERE Kota_AktifYN = 'Y'`
+				WHERE Kota_AktifYN = 'Y'
+				ORDER BY Kota_Name ASC`
 	
 	getCityById  = "getCityById"
 	qGetCityById = `SELECT Kota_Id, Kota_Name
 					FROM M_Kota
 					WHERE Kota_AktifYN = 'Y'
-					AND Kota_Id = ?`
+					AND Kota_Id = ?
+					ORDER BY Kota_Name ASC`
 					
 	getCityByName  = "getCityByName"
 	qGetCityByName = `SELECT Kota_Id, Kota_Name
 					FROM M_Kota
 					WHERE Kota_AktifYN = 'Y'
-					AND Kota_Name LIKE ?`
+					AND Kota_Name LIKE ?
+					ORDER BY Kota_Name ASC`
 
 	getBranchByCityId  = "getBranchByCityId"
 	qGetBranchByCityId = `SELECT Cab_Id, Cab_Nama, Cab_Alamat 
 							FROM M_Cabang
 							WHERE Cab_AktifYN = 'Y'
-							AND Cab_KotaId = ?`
+							AND Cab_KotaId = ?
+							ORDER BY Cab_Nama ASC`
 )
 
 var (

@@ -7,7 +7,7 @@ import (
 )
 
 type Data interface {
-	GetStrukturSubarea(ctx context.Context, ptID string, dptID string) ([]entity.ListSubarea, error) 
+	GetListStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListSubarea, error)
 }
 
 type Client interface {

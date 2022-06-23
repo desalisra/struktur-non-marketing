@@ -28,26 +28,10 @@ func (d *Data) UpdateConn() {
 }
 
 // Query List to Prepare
-const (
-	getNsm  = "getNsm"
-	qGetNsm = `SELECT Nsm_CompanyId, Pt_Name, Nsm_DepartmentId, Dpt_Name, 
-					Nsm_CdGroup, Nsm_Nip, Nsm_Name, Nsm_PositionId, Nsm_Position,
-					Nsm_In, Nsm_Out, Nsm_DummyYN, Nsm_BranchId, Cab_Nama, Nsm_CityId, Kota_Name,
-					Nsm_NipShadow, Nsm_NameShadow, Nsm_InShadow, Nsm_OutShadow, Nsm_DummyShadowYN
-				FROM Nm_Rayon_Nsm_202206
-				LEFT JOIN M_Pt ON Nsm_CompanyId = Pt_Id
-				LEFT JOIN M_Departemen ON Nsm_DepartmentId = Dpt_Id
-				LEFT JOIN M_Cabang ON Nsm_BranchId = Cab_Id
-				LEFT JOIN M_Kota ON Nsm_CityId = Kota_Id
-				WHERE Nsm_ActiveYN = 'Y'
-				AND Nsm_CompanyId = ?
-				AND Nsm_DepartmentId = ?`
-)
+const ()
 
 var (
-	readStmt   = []statement{
-		{getNsm, qGetNsm},
-	}
+	readStmt   = []statement{}
 	upsertStmt = []statement{}
 	deleteStmt = []statement{}
 )

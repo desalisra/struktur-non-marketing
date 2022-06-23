@@ -67,16 +67,16 @@ func settingConn(vp interface{}) {
 	var err error
 
 	vals := reflect.ValueOf(vp)
+
 	for _, e := range vals.MapKeys() {
 		connStr := vals.MapIndex(e).Interface().(string)
 
 		switch e.Interface().(string) {
-
 		// Add server
-		case "centuryoutlet_1h":
-			opendb.Db, err = sqlx.Open("mssql", connStr)
+		case "master":
+			opendb.Db, err = sqlx.Open("mysql", connStr)
 			if err != nil {
-				fmt.Println("Error Connection [Repeat Order]", err)
+				fmt.Println("Error Connection [Open Connection Database struktur_rayon]", err)
 			}
 		}
 	}
@@ -108,7 +108,7 @@ func getDefaultConfigFile() string {
 		configPath = "/vault/secrets/database.yaml"
 	default:
 		if os.Getenv("GOPATH") == "" {
-			configPath = "files/etc/request-order/request-order.development.yaml"
+			configPath = "files/etc/example/example.development.yaml"
 		}
 	}
 

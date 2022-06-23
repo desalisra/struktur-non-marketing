@@ -12,25 +12,35 @@ func ParseErrorCode(err string) response.Response {
 	switch {
 	case strings.Contains(err, "401"):
 		errResp = response.Error{
-			Status: false,
+			Status: true,
 			Msg:    "Unauthorized",
 			Code:   401,
 		}
 	case strings.Contains(err, "10001"):
 		errResp = response.Error{
-			Status: false,
+			Status: true,
 			Msg:    "Failed to fetch data",
 			Code:   10001,
 		}
 	case strings.Contains(err, "10002"):
 		errResp = response.Error{
-			Status: false,
+			Status: true,
 			Msg:    "Failed to insert data",
 			Code:   10001,
 		}
+	case strings.Contains(err, "1146"):
+		errResp = response.Error{
+			Status: true,
+			Msg:    "Table Dosn't Exsist",
+			Code:   1146,
+		}
+	default:
+		errResp = response.Error{
+			Status: true,
+			Msg:    err,
+			Code:   0,
+		}
 	}
-
-	errResp.Msg = errResp.Msg + " | " + err
 
 	return response.Response{
 		Error: errResp,

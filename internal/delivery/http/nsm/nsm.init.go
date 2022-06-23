@@ -6,7 +6,7 @@ import (
 )
 
 type Service interface {
-	GetStrukturNsm(ctx context.Context, ptID string, dptID string) ([]entity.ListNsm, error)
+	GetStrukturNsm(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListNsm, error)
 }
 
 type (

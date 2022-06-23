@@ -7,7 +7,7 @@ import (
 )
 
 type Data interface {
-	GetStrukturRegion(ctx context.Context, ptID string, dptID string) ([]entity.ListRegion, error)
+	GetListStrukturRegion(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListRegion, error)
 }
 
 type Client interface {

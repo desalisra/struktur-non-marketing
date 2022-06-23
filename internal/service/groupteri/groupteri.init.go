@@ -7,7 +7,10 @@ import (
 )
 
 type Data interface {
-	GetStrukturTeri(ctx context.Context, ptID string, dptID string) ([]entity.ListGrpteri, error)
+	GetListStrukturTeri(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListGrpteri, error)
+	MaxCodeGroup(ctx context.Context, periode string, dptID string) (string, error)
+	ChekNipExistOnDepartment(ctx context.Context, periode string, pt string, dpt string, nip string) (int, error)
+	InsertStrukturTeri(ctx context.Context, val entity.AddGrpteri) error
 }
 
 type Client interface {

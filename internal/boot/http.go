@@ -9,8 +9,6 @@ import (
 	"struktur-non-marketing/internal/config"
 	"struktur-non-marketing/internal/viper"
 
-	"github.com/jmoiron/sqlx"
-
 	server "struktur-non-marketing/internal/delivery/http"
 
 	authData "struktur-non-marketing/internal/data/auth"
@@ -74,10 +72,10 @@ func HTTP() error {
 	cfg := config.Get()
 	
 	// Open MySQL DB Connection
-	db, err = sqlx.Open("mysql", cfg.Database.Master)
-	if err != nil {
-		log.Fatalf("[DB] Failed to initialize database connection: %v", err)
-	}
+	// db, err = sqlx.Open("mysql", cfg.Database.Master)
+	// if err != nil {
+	// 	log.Fatalf("[DB] Failed to initialize database connection: %v", err)
+	// }
 
 	//
 	docs.SwaggerInfo.Host = cfg.Swagger.Host
