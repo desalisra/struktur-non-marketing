@@ -26,7 +26,7 @@ type ListRegion struct {
 	DateInShadow    null.String   `db:"Reg_InShadow" json:"shadow_in"`
 	DateOutShadow   null.String   `db:"Reg_OutShadow" json:"shadow_out"`
 	DummyShadow	    null.String   `db:"Reg_DummyShadowYN" json:"shadow_dummy"`
-	CdHead	    	int   		  `db:"Reg_Head" json:"code_head"`
+	CdHead	    	null.String   		  `db:"Reg_Head" json:"code_head"`
 	HeadNip	    	null.String   `db:"Nsm_Nip" json:"head_nip"`
 	HeadName	    null.String   `db:"Nsm_Name" json:"head_name"`
 }

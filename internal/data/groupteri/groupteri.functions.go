@@ -75,7 +75,7 @@ func (d Data) ChekNipExistOnDepartment(ctx context.Context, periode string, pt s
 
 	d.UpdateConn()
 
-	query := fmt.Sprintf(`SELECT COUNT(*)
+	query := fmt.Sprintf(`SELECT COUNT(*) total
 	FROM Nm_Rayon_Grpteri_%s
 	LEFT JOIN Nm_Rayon_Subarea_%s 
 		ON Grpt_Head = Sub_CdGroup
@@ -98,8 +98,8 @@ func (d Data) ChekNipExistOnDepartment(ctx context.Context, periode string, pt s
 	AND (Grpt_Nip = '%s' OR Sub_Nip = '%s' OR Area_Nip = '%s' OR Reg_Nip = '%s' OR Nsm_Nip = '%s')`, 
 	periode, periode, periode, periode, periode, pt, dpt, nip, nip, nip, nip, nip)
 
-	if err := d.db.QueryRowxContext(ctx, query).StructScan(&resulst); err != nil {
-		return resulst, errors.Wrap(err, "[DATA][Get Max CodeGroup]")
+	if err := d.db.QueryRowxContext(ctx, query).Scan(&resulst); err != nil {
+		return resulst, errors.Wrap(err, "[DATA][Chek Nip Exist on Same Department]")
 	}	
 	
 	return resulst, nil

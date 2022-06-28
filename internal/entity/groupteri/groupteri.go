@@ -42,11 +42,11 @@ type AddGrpteri struct {
 	CompanyName   	string 	  `json:"company_name"`
 	DepartmentID  	string    `json:"department_id"`
 	DepartmentName	string 	  `json:"department_name"`
-	CdGroup			string 	`json:"code_group"`
-	Nip          	string `json:"nip"`
-	Name         	string `json:"name"`
+	CdGroup			string 	  `json:"code_group"`
+	Nip          	string 	  `json:"nip"`
+	Name         	string	  `json:"name"`
 	PositionID   	string    `json:"position_id"`
-	PositionName 	string 		`json:"position_name"`
+	PositionName 	string 	  `json:"position_name"`
 	DateIn       	null.String `json:"date_in"`
 	DateOut      	null.String `json:"date_out"`
 	Dummy      		null.String `json:"dummy"`

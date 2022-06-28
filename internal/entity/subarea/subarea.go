@@ -26,7 +26,7 @@ type ListSubarea struct {
 	DateInShadow    null.String   `db:"Sub_InShadow" json:"shadow_in"`
 	DateOutShadow   null.String   `db:"Sub_OutShadow" json:"shadow_out"`
 	DummyShadow	    null.String   `db:"Sub_DummyShadowYN" json:"shadow_dummy"`
-	CdHead	    	int   		  `db:"Sub_Head" json:"code_head"`
+	CdHead	    	null.String    `db:"Sub_Head" json:"code_head"`
 	HeadNip	    	null.String   `db:"Area_Nip" json:"head_nip"`
 	HeadName	    null.String   `db:"Area_Name" json:"head_name"`
 }

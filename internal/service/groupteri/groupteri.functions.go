@@ -28,7 +28,7 @@ func (s Service) AddStrukturTeri(ctx context.Context, request entity.AddGrpteri)
 	)
 
 	// Validasi Data
-	
+
 	// Generate CodeGroup
 	cdGroup, err = s.data.MaxCodeGroup(ctx, request.Periode, request.DepartmentID)
 	if err != nil {
@@ -49,7 +49,7 @@ func (s Service) AddStrukturTeri(ctx context.Context, request entity.AddGrpteri)
 		// Chek Nip Exist 
 		chekNip, err := s.data.ChekNipExistOnDepartment(ctx, request.Periode, request.CompanyId, request.DepartmentID, nip)
 		if err != nil {
-			return resulst, errors.Wrap(err, "[SERVICE][get max CodeGroup]")
+			return resulst, errors.Wrap(err, "[SERVICE][Check Nip registered in the department]")
 		}
 		if chekNip > 0 {
 			resulst.Message = name + " (" + nip + ") already registered in the department "
