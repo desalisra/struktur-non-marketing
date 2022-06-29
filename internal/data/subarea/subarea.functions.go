@@ -48,3 +48,20 @@ func (d Data) GetListStrukturSubarea(ctx context.Context, periode string, ptID s
 
 	return resulst, nil
 }
+
+func (d Data) MaxCodeGroup(ctx context.Context, periode string, dptID string) (string, error) {
+	var resulst string
+
+	d.UpdateConn()
+
+	query := fmt.Sprintf(`SELECT IFNULL(MAX(Sub_CdGroup), 0) + 1 AS MaxKode
+						FROM Nm_Rayon_Subarea_%s
+						WHERE Sub_CdGroup <> '9999'
+						AND Sub_DepartmentId = %s`, periode, dptID)
+
+	if err := d.db.QueryRowxContext(ctx, query).Scan(&resulst); err != nil {
+		return resulst, errors.Wrap(err, "[DATA][Get Max CodeGroup]")
+	}	
+	
+	return resulst, nil
+}

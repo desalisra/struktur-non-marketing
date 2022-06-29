@@ -20,7 +20,8 @@ func (s Service) GetStrukturTeri(ctx context.Context, periode string, ptID strin
 func (s Service) AddStrukturTeri(ctx context.Context, request entity.AddGrpteri) (entity.ResMessage, error) {
 	var (
 		resulst entity.ResMessage
-		data entity.AddGrpteri
+		resData entity.ListGrpteri
+		reqData entity.AddGrpteri
 		err error
 		cdGroup string
 		nip string
@@ -58,25 +59,30 @@ func (s Service) AddStrukturTeri(ctx context.Context, request entity.AddGrpteri)
 	}
 
 	// Prepare Data Insert
-	data.Periode = request.Periode
-	data.CompanyId = request.CompanyId
-	data.DepartmentID = request.DepartmentID
-	data.CdGroup = cdGroup
-	data.Nip = nip
-	data.Name = name
-	data.PositionID = request.PositionID
-	data.PositionName = request.PositionName
-	data.DateIn = request.DateIn
-	data.Dummy = request.Dummy
-	data.BranchID = request.BranchID
-	data.CityID = request.CityID
-	data.CdHead = request.CdHead
+	reqData.Periode = request.Periode
+	reqData.CompanyId = request.CompanyId
+	reqData.DepartmentID = request.DepartmentID
+	reqData.CdGroup = cdGroup
+	reqData.Nip = nip
+	reqData.Name = name
+	reqData.PositionID = request.PositionID
+	reqData.PositionName = request.PositionName
+	reqData.DateIn = request.DateIn
+	reqData.Dummy = request.Dummy
+	reqData.BranchID = request.BranchID
+	reqData.CityID = request.CityID
+	reqData.CdHead = request.CdHead
 
-	err = s.data.InsertStrukturTeri(ctx, data)
+	err = s.data.InsertStrukturTeri(ctx, reqData)
 	if err != nil {
 		return resulst, errors.Wrap(err, "[SERVICE][Err when insert table structure]")
 	}
+	
+	resData, err = s.data.GetListStrukturTeriByCodeGroup(ctx, request.Periode, cdGroup, request.CompanyId, request.DepartmentID);
+
 
 	resulst.Message = "Data added successfully"
+	resulst.Data = resData
+
 	return resulst, err
 }

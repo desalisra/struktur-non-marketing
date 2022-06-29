@@ -5,7 +5,8 @@ import (
 )
 
 type ResMessage struct {
-	Message	string	`json:"msg"`
+	Message	string	`json:"message"`
+	Data    ListGrpteri `json:"data"`
 }
 
 type ListGrpteri struct {

@@ -31,16 +31,13 @@ func (d Data) GetListStrukturTeri(ctx context.Context, periode string, ptID stri
 					AND Grpt_DepartmentId = %s`, periode, periode, ptID, dptID)
 	
 	rows, err := d.db.QueryxContext(ctx, query)
-	// rows, err := d.stmt[getGrpteri].QueryxContext(ctx, ptID, dptID)
 	if err != nil {
-		fmt.Println("Error Disini")
 		return resulst, errors.Wrap(err, "[DATA][GET_LIST_GRPTERI]")
 	}
 
 	defer rows.Close()
 
 	for rows.Next() {
-		
 		row := entity.ListGrpteri{}
 		if err = rows.StructScan(&row); err != nil {
 			fmt.Println("Error Disini 1")
@@ -49,6 +46,45 @@ func (d Data) GetListStrukturTeri(ctx context.Context, periode string, ptID stri
 		resulst = append(resulst, row)
 	}
 
+	return resulst, nil
+}
+
+func (d Data) GetListStrukturTeriByCodeGroup(ctx context.Context, periode string, cdGroup string, ptID string, dptID string) (entity.ListGrpteri, error) {
+	resulst := entity.ListGrpteri{}
+
+	d.UpdateConn()
+
+	query := fmt.Sprintf(`SELECT Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
+						Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
+						Grpt_In, Grpt_Out, Grpt_DummyYN, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name,
+						Grpt_NipShadow, Grpt_NameShadow, Grpt_InShadow, Grpt_OutShadow, Grpt_DummyShadowYN,
+						Grpt_Head, Sub_Nip, Sub_Name
+					FROM Nm_Rayon_Grpteri_%s
+					LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
+					LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
+					LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
+					LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
+					LEFT JOIN Nm_Rayon_Subarea_%s ON Grpt_Head = Sub_CdGroup
+						AND Grpt_CompanyId = Sub_CompanyId
+						AND Grpt_DepartmentId = Sub_DepartmentId
+					WHERE Grpt_ActiveYN = 'Y'
+					AND Grpt_CdGroup = %s
+					AND Grpt_CompanyId = %s
+					AND Grpt_DepartmentId = %s`, periode, periode, cdGroup, ptID, dptID)
+	
+	rows, err := d.db.QueryxContext(ctx, query)
+	if err != nil {
+		return resulst, errors.Wrap(err, "[DATA][Get Struktur]")
+	}
+
+	defer rows.Close()
+	
+	for rows.Next() {
+		if err = rows.StructScan(&resulst); err != nil {
+			return resulst, errors.Wrap(err, "[DATA][Err Scan Struct]")
+		}
+	}
+	
 	return resulst, nil
 }
 

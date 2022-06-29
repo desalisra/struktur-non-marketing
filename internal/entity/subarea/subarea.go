@@ -30,3 +30,31 @@ type ListSubarea struct {
 	HeadNip	    	null.String   `db:"Area_Nip" json:"head_nip"`
 	HeadName	    null.String   `db:"Area_Name" json:"head_name"`
 }
+
+type AddSubarea struct {
+	Periode     	string    `json:"periode"`
+	CompanyId     	string    `json:"company_id"`
+	CompanyName   	string 	  `json:"company_name"`
+	DepartmentID  	string    `json:"department_id"`
+	DepartmentName	string 	  `json:"department_name"`
+	CdGroup			string 	  `json:"code_group"`
+	Nip          	string 	  `json:"nip"`
+	Name         	string	  `json:"name"`
+	PositionID   	string    `json:"position_id"`
+	PositionName 	string 	  `json:"position_name"`
+	DateIn       	null.String `json:"date_in"`
+	DateOut      	null.String `json:"date_out"`
+	Dummy      		null.String `json:"dummy"`
+	BranchID       	string   	`json:"branch_id"`
+	BranchName     	string  	`json:"branch_name"`
+	CityID       	string		`json:"city_id"`
+	CityName      	string  	`json:"city_name"`
+	NipShadow       null.String `json:"shadow_nip"`
+	NameShadow      null.String `json:"shadow_name"`
+	DateInShadow    null.String  `json:"shadow_in"`
+	DateOutShadow   null.String  `json:"shadow_out"`
+	DummyShadow	    null.String  `json:"shadow_dummy"`
+	CdHead	    	null.String  `json:"code_head"`
+	HeadNip	    	null.String  `json:"head_nip"`
+	HeadName	    null.String  `json:"head_name"`
+}
