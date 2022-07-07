@@ -43,6 +43,8 @@ func (s *Server) Handler() *mux.Router {
 	grpt := router.PathPrefix("/mr").Subrouter()
 	grpt.HandleFunc("/struktur", s.GroupTeri.GetStrukturTeri).Methods("GET")
 	grpt.HandleFunc("/struktur", s.GroupTeri.AddStrukturTeri).Methods("POST")
+	grpt.HandleFunc("/struktur", s.GroupTeri.EditStrukturTeri).Methods("PUT")
+	grpt.HandleFunc("/struktur", s.GroupTeri.DeleteStrukturTeri).Methods("DELETE")
 	
 	// Routes path SPV (SubArea)
 	sub := router.PathPrefix("/spv").Subrouter()

@@ -6,8 +6,10 @@ import (
 )
 
 type Service interface {
-	GetStrukturTeri(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListGrpteri, error)
-	AddStrukturTeri(ctx context.Context, request entity.AddGrpteri) (entity.ResMessage, error)
+	GetStruktur(ctx context.Context, periode, pt, dept string) ([]entity.Grpteri, error)
+	AddStrukturTeri(ctx context.Context, request entity.Grpteri) (entity.ResMessage, error)
+	EditStrukturTeri(ctx context.Context, r entity.Grpteri) (entity.ResMessage, error)
+	DeleteStrukturTeri(ctx context.Context, r entity.Grpteri) (entity.ResMessage, error)
 }
 
 type (

@@ -36,6 +36,8 @@ type KaryawanHandler interface {
 type GroupTeriHandler interface {
 	GetStrukturTeri(w http.ResponseWriter, r *http.Request)
 	AddStrukturTeri(w http.ResponseWriter, r *http.Request)
+	EditStrukturTeri(w http.ResponseWriter, r *http.Request)
+	DeleteStrukturTeri(w http.ResponseWriter, r *http.Request)
 }
 
 // SubAreaHandler ...

@@ -8,40 +8,41 @@ import (
 	entity "struktur-non-marketing/internal/entity/groupteri"
 )
 
-func (d Data) GetListStrukturTeri(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListGrpteri, error) {
-	resulst := []entity.ListGrpteri{}
+func (d Data) GetStrukturAll(ctx context.Context, periode, pt, dept string) ([]entity.Grpteri, error) {
+	resulst := []entity.Grpteri{}
 
 	d.UpdateConn()
 
-	query := fmt.Sprintf(`SELECT Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
-						Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
-						Grpt_In, Grpt_Out, Grpt_DummyYN, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name,
-						Grpt_NipShadow, Grpt_NameShadow, Grpt_InShadow, Grpt_OutShadow, Grpt_DummyShadowYN,
-						Grpt_Head, Sub_Nip, Sub_Name
-					FROM Nm_Rayon_Grpteri_%s
-					LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
-					LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
-					LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
-					LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
-					LEFT JOIN Nm_Rayon_Subarea_%s ON Grpt_Head = Sub_CdGroup
-						AND Grpt_CompanyId = Sub_CompanyId
-						AND Grpt_DepartmentId = Sub_DepartmentId
-					WHERE Grpt_ActiveYN = 'Y'
-					AND Grpt_CompanyId = %s
-					AND Grpt_DepartmentId = %s`, periode, periode, ptID, dptID)
+	query := `SELECT '` + periode + `' AS Grpt_Periode, Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
+				Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
+				Grpt_In, IFNULL(Grpt_Out, '') Grpt_Out, Grpt_DummyYN, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name,
+				IFNULL(Grpt_NipShadow, '') Grpt_NipShadow, IFNULL(Grpt_NameShadow, '') Grpt_NameShadow, IFNULL(Grpt_InShadow, '') Grpt_InShadow, 
+				IFNULL(Grpt_OutShadow, '') Grpt_OutShadow, Grpt_DummyShadowYN,
+				Grpt_Head, Sub_Nip, Sub_Name
+			FROM Nm_Rayon_Grpteri_` + periode + `
+			LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
+			LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
+			LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
+			LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
+			LEFT JOIN Nm_Rayon_Subarea_` + periode + ` ON Grpt_Head = Sub_CdGroup
+				AND Grpt_CompanyId = Sub_CompanyId
+				AND Grpt_DepartmentId = Sub_DepartmentId
+			WHERE Grpt_ActiveYN = 'Y'
+			AND Grpt_CompanyId = '` + pt + `'
+			AND Grpt_DepartmentId = '` + dept + `'`
 	
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {
-		return resulst, errors.Wrap(err, "[DATA][GET_LIST_GRPTERI]")
+		return resulst, errors.Wrap(err, "[DATA][Exec All Struktur Teri]")
 	}
 
 	defer rows.Close()
 
 	for rows.Next() {
-		row := entity.ListGrpteri{}
+		row := entity.Grpteri{}
 		if err = rows.StructScan(&row); err != nil {
 			fmt.Println("Error Disini 1")
-			return resulst, errors.Wrap(err, "[DATA][SCAN_LIST_GRPTERI]")
+			return resulst, errors.Wrap(err, "[DATA][Scan All Struktur Teri]")
 		}
 		resulst = append(resulst, row)
 	}
@@ -49,54 +50,56 @@ func (d Data) GetListStrukturTeri(ctx context.Context, periode string, ptID stri
 	return resulst, nil
 }
 
-func (d Data) GetListStrukturTeriByCodeGroup(ctx context.Context, periode string, cdGroup string, ptID string, dptID string) (entity.ListGrpteri, error) {
-	resulst := entity.ListGrpteri{}
+func (d Data) GetStrukturByCdGroup(ctx context.Context, periode string, cdGroup string, pt string, dept string) (entity.Grpteri, error) {
+	resulst := entity.Grpteri{}
 
 	d.UpdateConn()
 
-	query := fmt.Sprintf(`SELECT Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
-						Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
-						Grpt_In, Grpt_Out, Grpt_DummyYN, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name,
-						Grpt_NipShadow, Grpt_NameShadow, Grpt_InShadow, Grpt_OutShadow, Grpt_DummyShadowYN,
-						Grpt_Head, Sub_Nip, Sub_Name
-					FROM Nm_Rayon_Grpteri_%s
-					LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
-					LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
-					LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
-					LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
-					LEFT JOIN Nm_Rayon_Subarea_%s ON Grpt_Head = Sub_CdGroup
-						AND Grpt_CompanyId = Sub_CompanyId
-						AND Grpt_DepartmentId = Sub_DepartmentId
-					WHERE Grpt_ActiveYN = 'Y'
-					AND Grpt_CdGroup = %s
-					AND Grpt_CompanyId = %s
-					AND Grpt_DepartmentId = %s`, periode, periode, cdGroup, ptID, dptID)
+	query := `SELECT '` + periode + `' Grpt_Periode, Grpt_CompanyId, Pt_Name, Grpt_DepartmentId, Dpt_Name, 
+				Grpt_CdGroup, Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position,
+				Grpt_In, IFNULL(Grpt_Out, '') Grpt_Out, Grpt_DummyYN, Grpt_BranchId, Cab_Nama, Grpt_CityId, Kota_Name,
+				IFNULL(Grpt_NipShadow, '') Grpt_NipShadow, IFNULL(Grpt_NameShadow, '') Grpt_NameShadow, IFNULL(Grpt_InShadow, '') Grpt_InShadow, 
+				IFNULL(Grpt_OutShadow, '') Grpt_OutShadow, Grpt_DummyShadowYN,
+				Grpt_Head, Sub_Nip, Sub_Name
+			FROM Nm_Rayon_Grpteri_` + periode + `
+			LEFT JOIN M_Pt ON Grpt_CompanyId = Pt_Id
+			LEFT JOIN M_Departemen ON Grpt_DepartmentId = Dpt_Id
+			LEFT JOIN M_Cabang ON Grpt_BranchId = Cab_Id
+			LEFT JOIN M_Kota ON Grpt_CityId = Kota_Id
+			LEFT JOIN Nm_Rayon_Subarea_` + periode + ` ON Grpt_Head = Sub_CdGroup
+				AND Grpt_CompanyId = Sub_CompanyId
+				AND Grpt_DepartmentId = Sub_DepartmentId
+			WHERE Grpt_ActiveYN = 'Y'
+			AND Grpt_CdGroup = '` + cdGroup + `'
+			AND Grpt_CompanyId = '` + pt + `'
+			AND Grpt_DepartmentId = '` + dept + `'`
 	
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {
-		return resulst, errors.Wrap(err, "[DATA][Get Struktur]")
+		return resulst, errors.Wrap(err, "[DATA][Exec Struktur Teri By CdGroup]")
 	}
 
 	defer rows.Close()
 	
 	for rows.Next() {
 		if err = rows.StructScan(&resulst); err != nil {
-			return resulst, errors.Wrap(err, "[DATA][Err Scan Struct]")
+			return resulst, errors.Wrap(err, "[DATA][Scan Struktur Teri By CdGroup]")
 		}
 	}
 	
 	return resulst, nil
 }
 
-func (d Data) MaxCodeGroup(ctx context.Context, periode string, dptID string) (string, error) {
+func (d Data) MaxCodeGroup(ctx context.Context, periode string, pt string, dept string) (string, error) {
 	var resulst string
 
 	d.UpdateConn()
 
-	query := fmt.Sprintf(`SELECT IFNULL(MAX(Grpt_CdGroup), 0) + 1 AS MaxKode
-						FROM Nm_Rayon_Grpteri_%s
-						WHERE Grpt_CdGroup <> '9999'
-						AND Grpt_DepartmentId = %s`, periode, dptID)
+	query := `SELECT IFNULL(MAX(Grpt_CdGroup), 0) + 1 AS MaxKode
+			FROM Nm_Rayon_Grpteri_` + periode + `
+			WHERE Grpt_CdGroup <> '9999'
+			AND Grpt_CompanyId = '` + pt + `'
+			AND Grpt_DepartmentId = '` + dept + `'`
 
 	if err := d.db.QueryRowxContext(ctx, query).Scan(&resulst); err != nil {
 		return resulst, errors.Wrap(err, "[DATA][Get Max CodeGroup]")
@@ -141,23 +144,48 @@ func (d Data) ChekNipExistOnDepartment(ctx context.Context, periode string, pt s
 	return resulst, nil
 }
 
-func (d Data) InsertStrukturTeri(ctx context.Context, val entity.AddGrpteri) error {
+func (d Data) InsertNewStruktur(ctx context.Context, e entity.Grpteri) error {
 	d.UpdateConn()
 
-	query := fmt.Sprintf(`INSERT INTO Nm_Rayon_Grpteri_%s
-	(Grpt_CompanyId, Grpt_DepartmentId, Grpt_CdGroup, Grpt_PositionId, Grpt_Position,
-	 Grpt_Nip, Grpt_Name, Grpt_In, Grpt_DummyYN, Grpt_DummyShadowYN, 
-	 Grpt_BranchId, Grpt_CityId, Grpt_Head, Grpt_ActiveYN, Grpt_UpdateId,
-	 Grpt_UpdateTime
+	query := `INSERT INTO struktur_rayon.Nm_Rayon_Grpteri_` + e.Periode + ` (
+		Grpt_CompanyId, Grpt_DepartmentId, Grpt_CdGroup, 
+		Grpt_Nip, Grpt_Name, Grpt_PositionId, Grpt_Position, 
+		Grpt_In, Grpt_Out, Grpt_DummyYN, Grpt_NipShadow, 
+		Grpt_NameShadow, Grpt_InShadow, Grpt_OutShadow, Grpt_DummyShadowYN, 
+		Grpt_BranchId, Grpt_CityId, Grpt_Head, Grpt_ActiveYN, 
+		Grpt_UpdateId, Grpt_UpdateTime
 	) VALUES (
-		'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s
-	)`, val.Periode, val.CompanyId, val.DepartmentID, val.CdGroup, val.PositionID, val.PositionName,
-		val.Nip, val.Name, val.DateIn.String, val.Dummy.String, "Y",
-		val.BranchID, val.CityID, val.CdHead.String, "Y", "0000", "NOW()")
+		'`+ e.CompanyId +`', '`+ e.DepartmentId +`', '`+ e.CdGroup +`', 
+		'`+ e.Nip +`', '`+ e.Name +`', '` + e.PositionId +`', '` + e.PositionName +`', 
+		'` + e.DateIn +`', ` + e.DateOut +`, 
+		'` + e.Dummy +`', ` + e.NipShadow +`, ` + e.NameShadow +`, 
+		` + e.DateInShadow +`, ` + e.DateOutShadow +`, '` + e.DummyShadow +`', 
+		'` + e.BranchId +`', '` + e.CityId +`',  '` + e.CdHead +`', 		
+		'Y', '0000', NOW()
+	)`
 
 	_, err := d.db.ExecContext(ctx, query)
 	if err != nil {
 		return errors.Wrap(err, "[DATA][Exec Query Insert]")
+	}	
+	
+	return nil
+}
+
+func (d Data) DeleteStruktur(ctx context.Context,  periode string, pt string, dept string, cdGroup string) error {
+	d.UpdateConn()
+
+	query := `UPDATE struktur_rayon.Nm_Rayon_Grpteri_` + periode + `
+			SET Grpt_ActiveYN = 'N',
+				Grpt_UpdateId = '0000',
+				Grpt_DeleteTime = NOW()
+			WHERE Grpt_CompanyId = '` + pt + `'
+			AND Grpt_DepartmentId = '` + dept + `'
+			AND Grpt_CdGroup = '` + cdGroup + `'`
+
+	_, err := d.db.ExecContext(ctx, query)
+	if err != nil {
+		return errors.Wrap(err, "[DATA][Exec Query Update ActiveYN => N]")
 	}	
 	
 	return nil

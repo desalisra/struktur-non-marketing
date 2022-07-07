@@ -21,7 +21,7 @@ func (h *Handler) GetStrukturTeri(w http.ResponseWriter, r *http.Request) {
 	ptID := params["pt_id"][0]
 	dptID := params["dpt_id"][0]
 
-	result, err := h.service.GetStrukturTeri(ctx, periode, ptID, dptID)
+	result, err := h.service.GetStruktur(ctx, periode, ptID, dptID)
 	if err != nil {
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
@@ -34,7 +34,7 @@ func (h *Handler) GetStrukturTeri(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) AddStrukturTeri(w http.ResponseWriter, r *http.Request) {
-	var request entity.AddGrpteri
+	var request entity.Grpteri
 
 	resp := response.Response{}
 	defer resp.RenderJSON(w, r)
@@ -44,6 +44,51 @@ func (h *Handler) AddStrukturTeri(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(body, &request)
 
 	result, err := h.service.AddStrukturTeri(ctx, request)
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
+		return
+	}
+
+	resp.Data = result
+	resp.Metadata = "metadata"
+	log.Printf("[INFO][%s][%s] %s", r.RemoteAddr, r.Method, r.URL)
+}
+
+func (h *Handler) EditStrukturTeri(w http.ResponseWriter, r *http.Request) {
+	var request entity.Grpteri
+
+	resp := response.Response{}
+	defer resp.RenderJSON(w, r)
+	ctx := r.Context()
+
+	body, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(body, &request)
+
+
+	result, err := h.service.EditStrukturTeri(ctx, request)
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
+		return
+	}
+
+	resp.Data = result
+	resp.Metadata = "metadata"
+	log.Printf("[INFO][%s][%s] %s", r.RemoteAddr, r.Method, r.URL)
+}
+
+func (h *Handler) DeleteStrukturTeri(w http.ResponseWriter, r *http.Request) {
+	var request entity.Grpteri
+
+	resp := response.Response{}
+	defer resp.RenderJSON(w, r)
+	ctx := r.Context()
+
+	body, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(body, &request)
+
+	result, err := h.service.DeleteStrukturTeri(ctx, request)
 	if err != nil {
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
