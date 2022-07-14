@@ -6,7 +6,7 @@ import (
 )
 
 type Service interface {
-	GetStrukturRegion(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListRegion, error)
+	GetStrukturRegion(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListRegion, error)
 }
 
 type (

@@ -17,8 +17,9 @@ func (h *Handler) GetStrukturRegion(w http.ResponseWriter, r *http.Request) {
 	periode := params["periode"][0]
 	ptID := params["pt_id"][0]
 	dptID := params["dpt_id"][0]
+	karNip := params["nip"][0]
 
-	result, err := h.service.GetStrukturRegion(ctx, periode, ptID, dptID)
+	result, err := h.service.GetStrukturRegion(ctx, periode, ptID, dptID, karNip)
 	if err != nil {
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())

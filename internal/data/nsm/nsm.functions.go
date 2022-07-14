@@ -8,10 +8,12 @@ import (
 	entity "struktur-non-marketing/internal/entity/nsm"
 )
 
-func (d Data) GetListStrukturNsm(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListNsm, error) {
+func (d Data) GetListStrukturNsm(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListNsm, error) {
 	resulst := []entity.ListNsm{}
 
 	d.UpdateConn()
+
+	qNip := "'%" + nip + "%'"
 
 	query := fmt.Sprintf(`SELECT Nsm_CompanyId, Pt_Name, Nsm_DepartmentId, Dpt_Name, 
 							Nsm_CdGroup, Nsm_Nip, Nsm_Name, Nsm_PositionId, Nsm_Position,
@@ -24,7 +26,8 @@ func (d Data) GetListStrukturNsm(ctx context.Context, periode string, ptID strin
 						LEFT JOIN M_Kota ON Nsm_CityId = Kota_Id
 						WHERE Nsm_ActiveYN = 'Y'
 						AND Nsm_CompanyId = %s
-						AND Nsm_DepartmentId = %s`, periode, ptID, dptID)
+						AND Nsm_DepartmentId = %s
+						AND Nsm_Nip LIKE %s`, periode, ptID, dptID, qNip)
 
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {

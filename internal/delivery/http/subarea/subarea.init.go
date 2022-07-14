@@ -6,7 +6,7 @@ import (
 )
 
 type Service interface {
-	GetStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListSubarea, error)
+	GetStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListSubarea, error)
 }
 
 type (

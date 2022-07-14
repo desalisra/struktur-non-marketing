@@ -8,10 +8,12 @@ import (
 	entity "struktur-non-marketing/internal/entity/area"
 )
 
-func (d Data) GetListStrukturArea(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListArea, error) {
+func (d Data) GetListStrukturArea(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListArea, error) {
 	resulst := []entity.ListArea{}
 
 	d.UpdateConn()
+
+	qNip := "'%" + nip + "%'"
 
 	query := fmt.Sprintf(`SELECT Area_CompanyId, Pt_Name, Area_DepartmentId, Dpt_Name, 
 							Area_CdGroup, Area_Nip, Area_Name, Area_PositionId, Area_Position,
@@ -28,8 +30,9 @@ func (d Data) GetListStrukturArea(ctx context.Context, periode string, ptID stri
 							AND Area_DepartmentId = Reg_DepartmentId
 						WHERE Area_ActiveYN = 'Y'
 						AND Area_CompanyId = %s
-						AND Area_DepartmentId = %s`,
-			periode, periode, ptID, dptID)
+						AND Area_DepartmentId = %s
+						AND Area_Nip LIKE %s`,
+		periode, periode, ptID, dptID, qNip)
 
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {

@@ -7,12 +7,12 @@ import (
 )
 
 type Data interface {
-	GetStrukturAll(ctx context.Context, periode, pt, dept string) ([]entity.Grpteri, error) 
+	GetStrukturAll(ctx context.Context, periode, pt, dept string, nip string) ([]entity.Grpteri, error)
 	GetStrukturByCdGroup(ctx context.Context, periode string, cdGroup string, pt string, dept string) (entity.Grpteri, error)
 	MaxCodeGroup(ctx context.Context, periode string, pt string, dept string) (string, error)
 	ChekNipExistOnDepartment(ctx context.Context, periode string, pt string, dpt string, nip string) (int, error)
 	InsertNewStruktur(ctx context.Context, e entity.Grpteri) error
-	DeleteStruktur(ctx context.Context,  periode string, pt string, dept string, cdGroup string) error
+	DeleteStruktur(ctx context.Context, periode string, pt string, dept string, cdGroup string) error
 }
 
 type Client interface {
@@ -20,13 +20,13 @@ type Client interface {
 }
 
 type Service struct {
-	data Data
+	data   Data
 	client Client
 }
 
 func New(data Data, client Client) Service {
 	return Service{
-		data: data,
+		data:   data,
 		client: client,
 	}
 }

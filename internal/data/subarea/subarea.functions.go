@@ -8,10 +8,12 @@ import (
 	entity "struktur-non-marketing/internal/entity/subarea"
 )
 
-func (d Data) GetListStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListSubarea, error) {
+func (d Data) GetListStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListSubarea, error) {
 	resulst := []entity.ListSubarea{}
 
 	d.UpdateConn()
+
+	qNip := "'%" + nip + "%'"
 
 	query := fmt.Sprintf(
 		`SELECT Sub_CompanyId, Pt_Name, Sub_DepartmentId, Dpt_Name, 
@@ -29,7 +31,8 @@ func (d Data) GetListStrukturSubarea(ctx context.Context, periode string, ptID s
 			AND Sub_DepartmentId = Area_DepartmentId
 		WHERE Sub_ActiveYN = 'Y'
 		AND Sub_CompanyId = %s
-		AND Sub_DepartmentId = %s`, periode, periode, ptID, dptID)
+		AND Sub_DepartmentId = %s
+		AND Sub_Nip LIKE %s`, periode, periode, ptID, dptID, qNip)
 
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {
@@ -61,7 +64,7 @@ func (d Data) MaxCodeGroup(ctx context.Context, periode string, dptID string) (s
 
 	if err := d.db.QueryRowxContext(ctx, query).Scan(&resulst); err != nil {
 		return resulst, errors.Wrap(err, "[DATA][Get Max CodeGroup]")
-	}	
-	
+	}
+
 	return resulst, nil
 }

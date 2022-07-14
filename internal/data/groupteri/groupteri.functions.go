@@ -8,7 +8,7 @@ import (
 	entity "struktur-non-marketing/internal/entity/groupteri"
 )
 
-func (d Data) GetStrukturAll(ctx context.Context, periode, pt, dept string) ([]entity.Grpteri, error) {
+func (d Data) GetStrukturAll(ctx context.Context, periode, pt, dept string, nip string) ([]entity.Grpteri, error) {
 	resulst := []entity.Grpteri{}
 
 	d.UpdateConn()
@@ -29,8 +29,9 @@ func (d Data) GetStrukturAll(ctx context.Context, periode, pt, dept string) ([]e
 				AND Grpt_DepartmentId = Sub_DepartmentId
 			WHERE Grpt_ActiveYN = 'Y'
 			AND Grpt_CompanyId = '` + pt + `'
-			AND Grpt_DepartmentId = '` + dept + `'`
-	
+			AND Grpt_DepartmentId = '` + dept + `'
+			AND Grpt_Nip LIKE '%` + nip + `%'`
+
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {
 		return resulst, errors.Wrap(err, "[DATA][Exec All Struktur Teri]")
@@ -73,20 +74,20 @@ func (d Data) GetStrukturByCdGroup(ctx context.Context, periode string, cdGroup 
 			AND Grpt_CdGroup = '` + cdGroup + `'
 			AND Grpt_CompanyId = '` + pt + `'
 			AND Grpt_DepartmentId = '` + dept + `'`
-	
+
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {
 		return resulst, errors.Wrap(err, "[DATA][Exec Struktur Teri By CdGroup]")
 	}
 
 	defer rows.Close()
-	
+
 	for rows.Next() {
 		if err = rows.StructScan(&resulst); err != nil {
 			return resulst, errors.Wrap(err, "[DATA][Scan Struktur Teri By CdGroup]")
 		}
 	}
-	
+
 	return resulst, nil
 }
 
@@ -103,8 +104,8 @@ func (d Data) MaxCodeGroup(ctx context.Context, periode string, pt string, dept 
 
 	if err := d.db.QueryRowxContext(ctx, query).Scan(&resulst); err != nil {
 		return resulst, errors.Wrap(err, "[DATA][Get Max CodeGroup]")
-	}	
-	
+	}
+
 	return resulst, nil
 }
 
@@ -134,13 +135,13 @@ func (d Data) ChekNipExistOnDepartment(ctx context.Context, periode string, pt s
 		AND Reg_DepartmentId = Nsm_DepartmentId
 	WHERE Grpt_CompanyId = %s
 	AND Grpt_DepartmentId = %s
-	AND (Grpt_Nip = '%s' OR Sub_Nip = '%s' OR Area_Nip = '%s' OR Reg_Nip = '%s' OR Nsm_Nip = '%s')`, 
-	periode, periode, periode, periode, periode, pt, dpt, nip, nip, nip, nip, nip)
+	AND (Grpt_Nip = '%s' OR Sub_Nip = '%s' OR Area_Nip = '%s' OR Reg_Nip = '%s' OR Nsm_Nip = '%s')`,
+		periode, periode, periode, periode, periode, pt, dpt, nip, nip, nip, nip, nip)
 
 	if err := d.db.QueryRowxContext(ctx, query).Scan(&resulst); err != nil {
 		return resulst, errors.Wrap(err, "[DATA][Chek Nip Exist on Same Department]")
-	}	
-	
+	}
+
 	return resulst, nil
 }
 
@@ -155,24 +156,24 @@ func (d Data) InsertNewStruktur(ctx context.Context, e entity.Grpteri) error {
 		Grpt_BranchId, Grpt_CityId, Grpt_Head, Grpt_ActiveYN, 
 		Grpt_UpdateId, Grpt_UpdateTime
 	) VALUES (
-		'`+ e.CompanyId +`', '`+ e.DepartmentId +`', '`+ e.CdGroup +`', 
-		'`+ e.Nip +`', '`+ e.Name +`', '` + e.PositionId +`', '` + e.PositionName +`', 
-		'` + e.DateIn +`', ` + e.DateOut +`, 
-		'` + e.Dummy +`', ` + e.NipShadow +`, ` + e.NameShadow +`, 
-		` + e.DateInShadow +`, ` + e.DateOutShadow +`, '` + e.DummyShadow +`', 
-		'` + e.BranchId +`', '` + e.CityId +`',  '` + e.CdHead +`', 		
+		'` + e.CompanyId + `', '` + e.DepartmentId + `', '` + e.CdGroup + `', 
+		'` + e.Nip + `', '` + e.Name + `', '` + e.PositionId + `', '` + e.PositionName + `', 
+		'` + e.DateIn + `', ` + e.DateOut + `, 
+		'` + e.Dummy + `', ` + e.NipShadow + `, ` + e.NameShadow + `, 
+		` + e.DateInShadow + `, ` + e.DateOutShadow + `, '` + e.DummyShadow + `', 
+		'` + e.BranchId + `', '` + e.CityId + `',  '` + e.CdHead + `', 		
 		'Y', '0000', NOW()
 	)`
 
 	_, err := d.db.ExecContext(ctx, query)
 	if err != nil {
 		return errors.Wrap(err, "[DATA][Exec Query Insert]")
-	}	
-	
+	}
+
 	return nil
 }
 
-func (d Data) DeleteStruktur(ctx context.Context,  periode string, pt string, dept string, cdGroup string) error {
+func (d Data) DeleteStruktur(ctx context.Context, periode string, pt string, dept string, cdGroup string) error {
 	d.UpdateConn()
 
 	query := `UPDATE struktur_rayon.Nm_Rayon_Grpteri_` + periode + `
@@ -186,7 +187,7 @@ func (d Data) DeleteStruktur(ctx context.Context,  periode string, pt string, de
 	_, err := d.db.ExecContext(ctx, query)
 	if err != nil {
 		return errors.Wrap(err, "[DATA][Exec Query Update ActiveYN => N]")
-	}	
-	
+	}
+
 	return nil
 }

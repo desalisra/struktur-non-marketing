@@ -20,8 +20,9 @@ func (h *Handler) GetStrukturTeri(w http.ResponseWriter, r *http.Request) {
 	periode := params["periode"][0]
 	ptID := params["pt_id"][0]
 	dptID := params["dpt_id"][0]
+	karNip := params["nip"][0]
 
-	result, err := h.service.GetStruktur(ctx, periode, ptID, dptID)
+	result, err := h.service.GetStruktur(ctx, periode, ptID, dptID, karNip)
 	if err != nil {
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
@@ -64,7 +65,6 @@ func (h *Handler) EditStrukturTeri(w http.ResponseWriter, r *http.Request) {
 
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &request)
-
 
 	result, err := h.service.EditStrukturTeri(ctx, request)
 	if err != nil {

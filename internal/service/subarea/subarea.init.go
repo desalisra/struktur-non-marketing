@@ -7,7 +7,7 @@ import (
 )
 
 type Data interface {
-	GetListStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListSubarea, error)
+	GetListStrukturSubarea(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListSubarea, error)
 }
 
 type Client interface {
@@ -15,13 +15,13 @@ type Client interface {
 }
 
 type Service struct {
-	data Data
+	data   Data
 	client Client
 }
 
 func New(data Data, client Client) Service {
 	return Service{
-		data: data,
+		data:   data,
 		client: client,
 	}
 }

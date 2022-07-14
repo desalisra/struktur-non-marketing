@@ -8,10 +8,12 @@ import (
 	entity "struktur-non-marketing/internal/entity/region"
 )
 
-func (d Data) GetListStrukturRegion(ctx context.Context, periode string, ptID string, dptID string) ([]entity.ListRegion, error) {
+func (d Data) GetListStrukturRegion(ctx context.Context, periode string, ptID string, dptID string, nip string) ([]entity.ListRegion, error) {
 	resulst := []entity.ListRegion{}
 
 	d.UpdateConn()
+
+	qNip := "'%" + nip + "%'"
 
 	query := fmt.Sprintf(
 		`SELECT Reg_CompanyId, Pt_Name, Reg_DepartmentId, Dpt_Name, 
@@ -29,7 +31,8 @@ func (d Data) GetListStrukturRegion(ctx context.Context, periode string, ptID st
 			AND Reg_DepartmentId = Nsm_DepartmentId
 		WHERE Reg_ActiveYN = 'Y'
 		AND Reg_CompanyId = %s
-		AND Reg_DepartmentId = %s`, periode, periode, ptID, dptID)
+		AND Reg_DepartmentId = %s
+		AND Reg_Nip LIKE %s`, periode, periode, ptID, dptID, qNip)
 
 	rows, err := d.db.QueryxContext(ctx, query)
 	if err != nil {
