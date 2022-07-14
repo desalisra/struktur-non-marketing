@@ -10,23 +10,6 @@ import (
 	httpHelper "struktur-non-marketing/internal/delivery/http"
 )
 
-func (h *Handler) GetCitys(w http.ResponseWriter, r *http.Request) {
-	resp := response.Response{}
-	defer resp.RenderJSON(w, r)
-	ctx := r.Context()
-
-	result, err := h.service.GetCitys(ctx)
-	if err != nil {
-		resp = httpHelper.ParseErrorCode(err.Error())
-		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
-		return
-	}
-
-	resp.Data = result
-	resp.Metadata = "metadata"
-	log.Printf("[INFO][%s][%s] %s", r.RemoteAddr, r.Method, r.URL)
-}
-
 func (h *Handler) GetCity(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var result interface{}

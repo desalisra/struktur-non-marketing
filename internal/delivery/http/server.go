@@ -17,7 +17,6 @@ type DepartmentHandler interface {
 
 // CityHandler ...
 type CityHandler interface {
-	GetCitys(w http.ResponseWriter, r *http.Request)
 	GetCity(w http.ResponseWriter, r *http.Request)
 	GetBranch(w http.ResponseWriter, r *http.Request)
 }

@@ -28,17 +28,11 @@ func (d *Data) UpdateConn() {
 
 // Query List to Prepare
 const (
-	getCitys  = "getCitys"
-	qGetCitys = `SELECT Kota_Id, Kota_Name
-				FROM M_Kota
-				WHERE Kota_AktifYN = 'Y'
-				ORDER BY Kota_Name ASC`
-
 	getCityById  = "getCityById"
 	qGetCityById = `SELECT Kota_Id, Kota_Name
 					FROM M_Kota
 					WHERE Kota_AktifYN = 'Y'
-					AND Kota_Id = ?
+					AND Kota_Id LIKE ?
 					ORDER BY Kota_Name ASC`
 
 	getCityByName  = "getCityByName"
@@ -67,7 +61,6 @@ const (
 
 var (
 	readStmt = []statement{
-		{getCitys, qGetCitys},
 		{getCityById, qGetCityById},
 		{getCityByName, qGetCityByName},
 		{getCityBranchById, qGetCityBranchById},

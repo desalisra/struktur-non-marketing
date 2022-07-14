@@ -32,7 +32,6 @@ func (s *Server) Handler() *mux.Router {
 	master.HandleFunc("/department/{id}", s.Department.GetDepartmentById).Methods("GET")
 	master.HandleFunc("/position/{id}", s.Department.GetPosition).Methods("GET")
 
-	master.HandleFunc("/cities", s.City.GetCitys).Methods("GET")
 	master.HandleFunc("/city", s.City.GetCity).Methods("GET")
 	master.HandleFunc("/branch/{id}", s.City.GetBranch).Methods("GET")
 

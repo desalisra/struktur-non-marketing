@@ -6,7 +6,6 @@ import (
 )
 
 type Data interface {
-	GetCitys(ctx context.Context) ([]entity.City, error)
 	GetCityById(ctx context.Context, cityID string) (entity.City, error)
 	GetCityByName(ctx context.Context, cityName string) ([]entity.City, error)
 	GetCityBranchByID(ctx context.Context, cityID string, branchID string) ([]entity.Branch, error)
