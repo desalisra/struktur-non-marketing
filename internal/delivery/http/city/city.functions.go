@@ -61,20 +61,36 @@ func (h *Handler) GetCity(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[INFO][%s][%s] %s", r.RemoteAddr, r.Method, r.URL)
 }
 
+func (h *Handler) GetBranch(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var result interface{}
 
-func (h *Handler) GetBranchByCityId(w http.ResponseWriter, r *http.Request) {
 	resp := response.Response{}
 	defer resp.RenderJSON(w, r)
 	ctx := r.Context()
 
-	params := mux.Vars(r)
-	cityID := params["id"]
+	params1 := mux.Vars(r)
+	cityID := params1["id"]
 
-	result, err := h.service.GetBranchByCityId(ctx, cityID)
-	if err != nil {
-		resp = httpHelper.ParseErrorCode(err.Error())
-		log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
-		return
+	params2 := r.URL.Query()
+	searchBy := params2["type"][0]
+	searchValue := params2["value"][0]
+
+	switch searchBy {
+	case "id":
+		result, err = h.service.GetCityBranchByID(ctx, cityID, searchValue)
+		if err != nil {
+			resp = httpHelper.ParseErrorCode(err.Error())
+			log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
+			return
+		}
+	case "name":
+		result, err = h.service.GetCityBranchByName(ctx, cityID, searchValue)
+		if err != nil {
+			resp = httpHelper.ParseErrorCode(err.Error())
+			log.Printf("[ERROR][%s][%s] %s | Reason: %s", r.RemoteAddr, r.Method, r.URL, err.Error())
+			return
+		}
 	}
 
 	resp.Data = result

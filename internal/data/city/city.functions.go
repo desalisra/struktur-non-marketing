@@ -67,26 +67,54 @@ func (d Data) GetCityByName(ctx context.Context, cityName string) ([]entity.City
 	return resulst, nil
 }
 
-
-func (d Data) GetBranchByCityId(ctx context.Context, cityID string) ([]entity.Bracnh, error) {
-	resulst := []entity.Bracnh{}
+func (d Data) GetCityBranchByID(ctx context.Context, cityID string, branchID string) ([]entity.Branch, error) {
+	result := []entity.Branch{}
 
 	d.UpdateConn()
 
-	rows, err := d.stmt[getBranchByCityId].QueryxContext(ctx, cityID)
+	qCityName := cityID
+	qBranchID := "%" + branchID + "%"
+
+	rows, err := d.stmt[getCityBranchById].QueryxContext(ctx, qCityName, qBranchID)
 	if err != nil {
-		return resulst, errors.Wrap(err, "[DATA][GET_BRANCH_BY_CITYID_EXEC_QUERY]")
+		return result, errors.Wrap(err, "[DATA][GET_CITYBRANCH_BY_NAME_EXEC_QUERY]")
 	}
 
 	defer rows.Close()
 
 	for rows.Next() {
-		row := entity.Bracnh{}
+		row := entity.Branch{}
 		if err = rows.StructScan(&row); err != nil {
-			return resulst, errors.Wrap(err, "[DATA][GET_BRANCH_SCAN_DATA]")
+			return result, errors.Wrap(err, "[DATA][GET_BRANCH_SCAN_DATA]")
 		}
-		resulst = append(resulst, row)
+		result = append(result, row)
 	}
 
-	return resulst, nil
+	return result, nil
+}
+
+func (d Data) GetCityBranchByName(ctx context.Context, cityID string, branchName string) ([]entity.Branch, error) {
+	result := []entity.Branch{}
+
+	d.UpdateConn()
+
+	qCityName := cityID
+	qBranchName := "%" + branchName + "%"
+
+	rows, err := d.stmt[getCityBranchByName].QueryxContext(ctx, qCityName, qBranchName)
+	if err != nil {
+		return result, errors.Wrap(err, "[DATA][GET_CITYBRANCH_BY_ID_EXEC_QUERY]")
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		row := entity.Branch{}
+		if err = rows.StructScan(&row); err != nil {
+			return result, errors.Wrap(err, "[DATA][GET_BRANCH_SCAN_DATA]")
+		}
+		result = append(result, row)
+	}
+
+	return result, nil
 }

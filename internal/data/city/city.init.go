@@ -21,7 +21,6 @@ type (
 	}
 )
 
-
 func (d *Data) UpdateConn() {
 	v := viper.GetConn()
 	d.db = v.Db
@@ -34,14 +33,14 @@ const (
 				FROM M_Kota
 				WHERE Kota_AktifYN = 'Y'
 				ORDER BY Kota_Name ASC`
-	
+
 	getCityById  = "getCityById"
 	qGetCityById = `SELECT Kota_Id, Kota_Name
 					FROM M_Kota
 					WHERE Kota_AktifYN = 'Y'
 					AND Kota_Id = ?
 					ORDER BY Kota_Name ASC`
-					
+
 	getCityByName  = "getCityByName"
 	qGetCityByName = `SELECT Kota_Id, Kota_Name
 					FROM M_Kota
@@ -49,20 +48,30 @@ const (
 					AND Kota_Name LIKE ?
 					ORDER BY Kota_Name ASC`
 
-	getBranchByCityId  = "getBranchByCityId"
-	qGetBranchByCityId = `SELECT Cab_Id, Cab_Nama, Cab_Alamat 
+	getCityBranchById  = "getCityBranchById"
+	qGetCityBranchById = `SELECT Cab_Id, Cab_Nama, Cab_Alamat 
 							FROM M_Cabang
 							WHERE Cab_AktifYN = 'Y'
 							AND Cab_KotaId = ?
+							AND Cab_Id LIKE ?
+							ORDER BY Cab_Nama ASC`
+
+	getCityBranchByName  = "getCityBranchByName"
+	qGetCityBranchByName = `SELECT Cab_Id, Cab_Nama, Cab_Alamat 
+							FROM M_Cabang
+							WHERE Cab_AktifYN = 'Y'
+							AND Cab_KotaId = ?
+							AND Cab_Nama LIKE ?
 							ORDER BY Cab_Nama ASC`
 )
 
 var (
-	readStmt   = []statement{
+	readStmt = []statement{
 		{getCitys, qGetCitys},
 		{getCityById, qGetCityById},
 		{getCityByName, qGetCityByName},
-		{getBranchByCityId, qGetBranchByCityId},
+		{getCityBranchById, qGetCityBranchById},
+		{getCityBranchByName, qGetCityBranchByName},
 	}
 	upsertStmt = []statement{}
 	deleteStmt = []statement{}

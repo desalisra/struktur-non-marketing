@@ -70,7 +70,7 @@ func HTTP() error {
 	db := v.Db
 
 	cfg := config.Get()
-	
+
 	// Open MySQL DB Connection
 	// db, err = sqlx.Open("mysql", cfg.Database.Master)
 	// if err != nil {
@@ -86,7 +86,7 @@ func HTTP() error {
 	as := authService.New(ad)
 
 	//Sementara
-	_ = as 
+	_ = as
 
 	dptd := departmentData.New(db)
 	dpts := departmentService.New(dptd)
@@ -105,7 +105,7 @@ func HTTP() error {
 	kryh := kryHandler.New(krys)
 
 	cd := clientData.New(httpc, cfg.API.Client)
-	
+
 	grpterid := grpteriData.New(db)
 	grpteris := grpteriService.New(grpterid, cd)
 	grpterih := grpteriHandler.New(grpteris)
@@ -126,17 +126,16 @@ func HTTP() error {
 	nsms := nsmService.New(nsmd, cd)
 	nsmh := nsmHandler.New(nsms)
 
-
 	s := server.Server{
 		Department: dpth,
-		City: cityh,
-		Iklan: iklanh,
-		Karyawan: kryh,
-		GroupTeri: grpterih,
-		SubArea: subh,
-		Area: areah,
-		Region: regh,
-		Nsm: nsmh,
+		City:       cityh,
+		Iklan:      iklanh,
+		Karyawan:   kryh,
+		GroupTeri:  grpterih,
+		SubArea:    subh,
+		Area:       areah,
+		Region:     regh,
+		Nsm:        nsmh,
 	}
 
 	if err := s.Serve(cfg.Server.Port); err != http.ErrServerClosed {

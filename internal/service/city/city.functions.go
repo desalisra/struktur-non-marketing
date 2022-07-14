@@ -37,12 +37,22 @@ func (s Service) GetCityByName(ctx context.Context, cityName string) ([]entity.C
 	return resulst, err
 }
 
-func (s Service) GetBranchByCityId(ctx context.Context, cityID string) ([]entity.Bracnh, error) {
+func (s Service) GetCityBranchByID(ctx context.Context, cityID string, branchID string) ([]entity.Branch, error) {
 
-	resulst, err := s.data.GetBranchByCityId(ctx, cityID)
+	result, err := s.data.GetCityBranchByID(ctx, cityID, branchID)
 	if err != nil {
-		return resulst, errors.Wrap(err, "[SERVICE][GET_ALL_City_BYID]")
+		return result, errors.Wrap(err, "[SERVICE][GET_ALL_CITYBRANCH_BY_ID]")
 	}
 
-	return resulst, err
+	return result, err
+}
+
+func (s Service) GetCityBranchByName(ctx context.Context, cityID string, branchName string) ([]entity.Branch, error) {
+
+	result, err := s.data.GetCityBranchByName(ctx, cityID, branchName)
+	if err != nil {
+		return result, errors.Wrap(err, "[SERVICE][GET_ALL_CITYBRANCH_BY_Name]")
+	}
+
+	return result, err
 }

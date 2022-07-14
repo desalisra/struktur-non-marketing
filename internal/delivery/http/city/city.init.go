@@ -9,7 +9,8 @@ type Service interface {
 	GetCitys(ctx context.Context) ([]entity.City, error)
 	GetCityById(ctx context.Context, cityID string) (entity.City, error)
 	GetCityByName(ctx context.Context, cityName string) ([]entity.City, error)
-	GetBranchByCityId(ctx context.Context, cityID string) ([]entity.Bracnh, error)
+	GetCityBranchByID(ctx context.Context, cityID string, branchID string) ([]entity.Branch, error)
+	GetCityBranchByName(ctx context.Context, cityID string, branchName string) ([]entity.Branch, error)
 }
 
 type (

@@ -19,7 +19,7 @@ type DepartmentHandler interface {
 type CityHandler interface {
 	GetCitys(w http.ResponseWriter, r *http.Request)
 	GetCity(w http.ResponseWriter, r *http.Request)
-	GetBranchByCityId(w http.ResponseWriter, r *http.Request)
+	GetBranch(w http.ResponseWriter, r *http.Request)
 }
 
 // IklanHandler ...
@@ -60,20 +60,18 @@ type NsmHandler interface {
 	GetStrukturNsm(w http.ResponseWriter, r *http.Request)
 }
 
-
-
 // Server ...
 type Server struct {
 	// server   *http.Server
-	Department	DepartmentHandler
-	City		CityHandler
-	Iklan		IklanHandler
-	Karyawan	KaryawanHandler
-	GroupTeri	GroupTeriHandler
-	SubArea		SubAreaHandler
-	Area		AreaHandler
-	Region		RegionHandler
-	Nsm			NsmHandler
+	Department DepartmentHandler
+	City       CityHandler
+	Iklan      IklanHandler
+	Karyawan   KaryawanHandler
+	GroupTeri  GroupTeriHandler
+	SubArea    SubAreaHandler
+	Area       AreaHandler
+	Region     RegionHandler
+	Nsm        NsmHandler
 }
 
 // Serve is serving HTTP gracefully on port x ...
